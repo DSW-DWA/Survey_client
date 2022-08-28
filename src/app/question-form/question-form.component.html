@@ -8,20 +8,29 @@
   </mat-select>
 </mat-form-field> -->
 <div *ngIf="(isLoad | async)" class="form-wrapper">
-  <mat-form-field>
-    <mat-label>ФИО</mat-label>
-    <input type="text" matInput placeholder="Иван Иванов Иванович">
-  </mat-form-field>
-  <ng-container *ngFor="let i of questionList">
-  <h4>{{i.text}}</h4>
-    <mat-form-field appearance="fill">
-      <mat-label>Выберите ответ</mat-label>
-      <mat-select>
-        <mat-option value="i.firstAnswer">{{i.firstAnswer}}</mat-option>
-        <mat-option value="i.secondAnswer">{{i.secondAnswer}}</mat-option>
-        <mat-option value="i.thirdAnswer">{{i.thirdAnswer}}</mat-option>
-      </mat-select>
+  <form [formGroup]="questionForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <mat-label>ФИО</mat-label>
+      <input type="text" 
+      matInput 
+      placeholder="Иван Иванов Иванович" 
+      formControlName="name"
+      required>
+      <mat-error>
+        Поле обязательно
+      </mat-error>
     </mat-form-field>
-  </ng-container>
-  <button mat-raised-button color="primary">Ответить</button>
+    <ng-container *ngFor="let question of questionList; let i = index">
+    <h4>{{question.text}}</h4>
+      <mat-form-field appearance="fill">
+        <mat-label>Выберите ответ</mat-label>
+        <mat-select formControlName="{{'question' +(i+1)}}">
+          <mat-option value="{{question.firstAnswer}}">{{question.firstAnswer}}</mat-option>
+          <mat-option value="{{question.secondAnswer}}">{{question.secondAnswer}}</mat-option>
+          <mat-option value="{{question.thirdAnswer}}">{{question.thirdAnswer}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
+    <button type="submit" mat-raised-button color="primary">Ответить</button>
+  </form>
 </div>
