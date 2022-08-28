@@ -1,0 +1,27 @@
+<!-- <h4>mat-select</h4>
+<mat-form-field appearance="fill">
+  <mat-label>Choose an option</mat-label>
+  <mat-select>
+    <mat-option value="option1">Option 1</mat-option>
+    <mat-option value="option2">Option 2</mat-option>
+    <mat-option value="option3">Option 3</mat-option>
+  </mat-select>
+</mat-form-field> -->
+<div *ngIf="(isLoad | async)" class="form-wrapper">
+  <mat-form-field>
+    <mat-label>ФИО</mat-label>
+    <input type="text" matInput placeholder="Иван Иванов Иванович">
+  </mat-form-field>
+  <ng-container *ngFor="let i of questionList">
+  <h4>{{i.text}}</h4>
+    <mat-form-field appearance="fill">
+      <mat-label>Выберите ответ</mat-label>
+      <mat-select>
+        <mat-option value="i.firstAnswer">{{i.firstAnswer}}</mat-option>
+        <mat-option value="i.secondAnswer">{{i.secondAnswer}}</mat-option>
+        <mat-option value="i.thirdAnswer">{{i.thirdAnswer}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </ng-container>
+  <button mat-raised-button color="primary">Ответить</button>
+</div>
