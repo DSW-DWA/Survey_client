@@ -13,18 +13,19 @@ import { Answer } from 'src/Models/Answer';
 export class QuestionFormComponent implements OnInit, OnDestroy {
   questionList: Question[] = [];
   unsubcribe: Subject<any> = new Subject<any>();
-  isLoad: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  isForm: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  isAnswer: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   constructor(
     private questionService: QuestionService,
     private formBuilder: FormBuilder,
   ) {}
   questionForm = this.formBuilder.group({
     name: ['', Validators.required],
-    question1: [''],
-    question2: [''],
-    question3: [''],
-    question4: [''],
-    question5: [''],
+    question1: [],
+    question2: [],
+    question3: [],
+    question4: [],
+    question5: [],
   });
   ngOnInit(): void {
     this.questionService.getAll()
@@ -34,7 +35,7 @@ export class QuestionFormComponent implements OnInit, OnDestroy {
     .subscribe(
       result => {
         this.questionList = result;
-        this.isLoad.next(true);
+        this.isForm.next(true);
       },
       error => {
         console.error("Не возможно получить данные с сервера")
@@ -58,6 +59,8 @@ export class QuestionFormComponent implements OnInit, OnDestroy {
       .subscribe(
         result => {
           console.warn("Ответ отправлен");
+          this.isForm.next(false);
+          this.isAnswer.next(true);
         },
         error => {
           console.error("Ответ не отправлен");

@@ -1,13 +1,5 @@
-<!-- <h4>mat-select</h4>
-<mat-form-field appearance="fill">
-  <mat-label>Choose an option</mat-label>
-  <mat-select>
-    <mat-option value="option1">Option 1</mat-option>
-    <mat-option value="option2">Option 2</mat-option>
-    <mat-option value="option3">Option 3</mat-option>
-  </mat-select>
-</mat-form-field> -->
-<div *ngIf="(isLoad | async)" class="form-wrapper">
+
+<div *ngIf="(isForm | async)" class="form-wrapper">
   <form [formGroup]="questionForm" (ngSubmit)="onSubmit()">
     <mat-form-field>
       <mat-label>ФИО</mat-label>
@@ -25,12 +17,16 @@
       <mat-form-field appearance="fill">
         <mat-label>Выберите ответ</mat-label>
         <mat-select formControlName="{{'question' +(i+1)}}">
-          <mat-option value="{{question.firstAnswer}}">{{question.firstAnswer}}</mat-option>
-          <mat-option value="{{question.secondAnswer}}">{{question.secondAnswer}}</mat-option>
-          <mat-option value="{{question.thirdAnswer}}">{{question.thirdAnswer}}</mat-option>
+          <mat-option value="{{1}}">{{question.firstAnswer}}</mat-option>
+          <mat-option value="{{2}}">{{question.secondAnswer}}</mat-option>
+          <mat-option value="{{3}}">{{question.thirdAnswer}}</mat-option>
         </mat-select>
       </mat-form-field>
     </ng-container>
     <button type="submit" mat-raised-button color="primary">Ответить</button>
   </form>
+</div>
+
+<div *ngIf="(isAnswer | async)">
+  
 </div>

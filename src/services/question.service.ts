@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Question } from 'src/Models/Question';
 import { HttpClient } from '@angular/common/http';
 import { Answer } from 'src/Models/Answer';
+import { Statistics } from 'src/Models/Statistics';
 
 @Injectable({
   providedIn: 'root'
@@ -18,5 +19,9 @@ export class QuestionService {
 
   postAnswer(answer: Answer): Observable<any>{
     return this.http.post<any>(this.url+"answer", answer);
+  }
+
+  getStatistics(): Observable<Statistics>{
+    return this.http.get<Statistics>(this.url+"statistics");
   }
 }
