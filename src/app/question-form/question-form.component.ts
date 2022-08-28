@@ -2,7 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { Question } from 'src/Models/Question';
 import { QuestionService } from 'src/services/question.service';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Answer } from 'src/Models/Answer';
 
 @Component({
   selector: 'app-question-form',
@@ -30,15 +31,38 @@ export class QuestionFormComponent implements OnInit, OnDestroy {
     .pipe(
       takeUntil(this.unsubcribe)
     )
-    .subscribe(x => {
-      this.questionList = x;
-      this.isLoad.next(true);
-      console.log(this.questionList, this.isLoad);
-    })
+    .subscribe(
+      result => {
+        this.questionList = result;
+        this.isLoad.next(true);
+      },
+      error => {
+        console.error("Не возможно получить данные с сервера")
+      })
   }
   onSubmit(){
     if (this.questionForm.valid){
-      console.log(this.questionForm);
+      var answer: Answer = {
+        id: 0,
+        name: this.questionForm.value.name != null? this.questionForm.value.name: undefined,
+        question1: this.questionForm.value.question1 != null? this.questionForm.value.question1: undefined,
+        question2: this.questionForm.value.question2 != null? this.questionForm.value.question2: undefined,
+        question3: this.questionForm.value.question3 != null? this.questionForm.value.question3: undefined,
+        question4: this.questionForm.value.question4 != null? this.questionForm.value.question4: undefined,
+        question5: this.questionForm.value.question5 != null? this.questionForm.value.question5: undefined
+      };
+      this.questionService.postAnswer(answer)
+      .pipe(
+        takeUntil(this.unsubcribe)
+      )
+      .subscribe(
+        result => {
+          console.warn("Ответ отправлен");
+        },
+        error => {
+          console.error("Ответ не отправлен");
+        }
+      )
     }
   }
   ngOnDestroy(): void {
