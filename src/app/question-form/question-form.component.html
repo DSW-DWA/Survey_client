@@ -28,5 +28,54 @@
 </div>
 
 <div *ngIf="(isAnswer | async)">
+  <div class="table-wrapper">
+    <p>
+      Ваш результат
+    </p>
+  </div>
+  <table mat-table [dataSource]="dataSourceTested" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="questionNumber">
+      <th mat-header-cell *matHeaderCellDef> Вопрос </th>
+      <td mat-cell *matCellDef="let element"> {{element.questionNumber}} </td>
+    </ng-container>
   
+    <ng-container matColumnDef="testedAnswer">
+      <th mat-header-cell *matHeaderCellDef> Ваш ответ </th>
+      <td mat-cell *matCellDef="let element"> {{element.testedAnswer}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="correctAnswer">
+      <th mat-header-cell *matHeaderCellDef> Правильный ответ </th>
+      <td mat-cell *matCellDef="let element"> {{element.correctAnswer}} </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsTested"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumnsTested;"></tr>
+  </table> 
+  <div class="table-wrapper">
+    <p>
+      Статистика по всем пользователям
+    </p>
+  </div>
+  <table mat-table [dataSource]="dataSourceStatistics" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="questionNumber">
+      <th mat-header-cell *matHeaderCellDef>Вопрос</th>
+      <td mat-cell *matCellDef="let element"> {{element.questionNumber}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="correctAnswers">
+      <th mat-header-cell *matHeaderCellDef>Правильные ответы</th>
+      <td mat-cell *matCellDef="let element"> {{element.correctAnswers}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="failedAnswers">
+      <th mat-header-cell *matHeaderCellDef>Неправильные ответы</th>
+      <td mat-cell *matCellDef="let element"> {{element.failedAnswers}} </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsStatistics"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumnsStatistics;"></tr>
+  </table>   
 </div>

@@ -12,12 +12,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
-import {MatTableModule} from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
+import { AnswerToDataSourcePipe } from './pipes/answer-to-data-source.pipe';
+import { StatisticsToDataSourcePipe } from './pipes/statistics-to-data-source.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    QuestionFormComponent
+    QuestionFormComponent,
+    AnswerToDataSourcePipe,
+    StatisticsToDataSourcePipe
   ],
   imports: [
     BrowserModule,
@@ -31,7 +35,10 @@ import {MatTableModule} from '@angular/material/table';
     ReactiveFormsModule,
     MatTableModule
   ],
-  providers: [],
+  providers: [
+    AnswerToDataSourcePipe,
+    StatisticsToDataSourcePipe
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

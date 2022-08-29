@@ -4,6 +4,10 @@ import { Question } from 'src/Models/Question';
 import { QuestionService } from 'src/services/question.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Answer } from 'src/Models/Answer';
+import { DataTested } from 'src/Models/DataTested';
+import { AnswerToDataSourcePipe } from '../pipes/answer-to-data-source.pipe';
+import { DataStatistics } from 'src/Models/DataStatistics';
+import { StatisticsToDataSourcePipe } from '../pipes/statistics-to-data-source.pipe';
 
 @Component({
   selector: 'app-question-form',
@@ -15,9 +19,13 @@ export class QuestionFormComponent implements OnInit, OnDestroy {
   unsubcribe: Subject<any> = new Subject<any>();
   isForm: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   isAnswer: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  displayedColumnsTested: string[] = ['questionNumber', 'testedAnswer', 'correctAnswer'];
+  displayedColumnsStatistics: string[] = ['questionNumber', 'correctAnswers', 'failedAnswers'];
   constructor(
     private questionService: QuestionService,
     private formBuilder: FormBuilder,
+    private answerPipe: AnswerToDataSourcePipe,
+    private statisticsPipe: StatisticsToDataSourcePipe,
   ) {}
   questionForm = this.formBuilder.group({
     name: ['', Validators.required],
@@ -27,6 +35,8 @@ export class QuestionFormComponent implements OnInit, OnDestroy {
     question4: [],
     question5: [],
   });
+  dataSourceTested: DataTested[] = [];
+  dataSourceStatistics: DataStatistics[] = [];
   ngOnInit(): void {
     this.questionService.getAll()
     .pipe(
@@ -52,6 +62,7 @@ export class QuestionFormComponent implements OnInit, OnDestroy {
         question4: this.questionForm.value.question4 != null? this.questionForm.value.question4: undefined,
         question5: this.questionForm.value.question5 != null? this.questionForm.value.question5: undefined
       };
+      this.dataSourceTested = this.answerPipe.transform(answer,this.questionList);
       this.questionService.postAnswer(answer)
       .pipe(
         takeUntil(this.unsubcribe)
@@ -61,12 +72,29 @@ export class QuestionFormComponent implements OnInit, OnDestroy {
           console.warn("Ответ отправлен");
           this.isForm.next(false);
           this.isAnswer.next(true);
+          this.getStatistics();
         },
         error => {
           console.error("Ответ не отправлен");
         }
       )
     }
+  }
+  getStatistics(){
+    this.questionService.getStatistics()
+    .pipe(
+      takeUntil(this.unsubcribe)
+    )
+    .subscribe(
+      result => {
+        console.warn("Статистика получена");
+        console.log(result);
+        this.dataSourceStatistics = this.statisticsPipe.transform(result);
+      },
+      error => {
+        console.error("Cтатистика не получена");
+      }
+    )
   }
   ngOnDestroy(): void {
     this.unsubcribe.next(undefined)

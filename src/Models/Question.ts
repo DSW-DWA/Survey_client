@@ -4,5 +4,5 @@ export interface Question {
     firstAnswer: string,
     secondAnswer: string,
     thirdAnswer: string,
-    correctAnswer: string
+    correctAnswer: number
 }
